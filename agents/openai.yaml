@@ -1,6 +1,6 @@
 interface:
-  display_name: "氨基酸投影式绘图"
-  short_description: "按教材规范绘制、分组并质检氨基酸Fischer投影式"
-  default_prompt: "Use $amino-acid-fischer-projections to draw textbook-ready amino-acid Fischer projections."
+  display_name: "氨基酸结构与反应式绘图"
+  short_description: "按教材规范绘制并质检氨基酸投影式和典型反应式"
+  default_prompt: "Use $amino-acid-fischer-projections to draw textbook-ready amino-acid projections or reaction schemes."
 policy:
   allow_implicit_invocation: true

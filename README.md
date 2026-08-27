@@ -16,7 +16,7 @@
 将仓库克隆到 Codex 的个人 skills 目录：
 
 ```powershell
-git clone git@github.com:libmelo/amino-acid-fischer-projections.git "$env:USERPROFILE\.codex\skills\amino-acid-fischer-projections"
+git clone git@github.com:libmelo/BChemFig.git "$env:USERPROFILE\.codex\skills\amino-acid-fischer-projections"
 ```
 
 技能名称为：

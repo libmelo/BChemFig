@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+amino_acid_fischer_output/
+output/

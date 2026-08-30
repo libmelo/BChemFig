@@ -1,86 +1,74 @@
-# BChemFig：氨基酸教材插图
+# BChemFig：生化教材插图技能
 
-一个面向中文生物化学与食品生物化学教材的 Codex skill，用于绘制和审查氨基酸 Fischer 投影式及典型反应式。项目同时提供化学规则、排版规则、可重复生成脚本和逐图质检清单。
+`BChemFig` 是面向中文生物化学与食品生物化学教材的 Codex skill，用于制作和审校科学准确、版式统一、可用于印刷和 Word 排版的生化插图。
 
-## 主要能力
+## 适用内容
 
-- 遵循 L-α-氨基酸 Fischer 投影的立体化学约定。
-- 显式绘制非环重原子及其化学键，并核对双键、芳香环与杂环连接位点。
-- 统一 `C`、`H` 的 Times New Roman 字体、字面尺寸和基线。
-- 中文名称使用宋体，英文缩写使用 Times New Roman。
-- 内置20种氨基酸的默认五组组图版式。
-- 内置亚硝酸反应、N-酰基化、DNFB 标记、Edman 降解和希夫碱形成五类反应式。
-- 反应式采用紧凑短箭头，严格保证键连接到正确的 C、N、O、S 原子。
-- 对 `R′` 使用斜体 R 与独立上标撇号，避免不同公式中的基线漂移。
-- 同时提供化学规则、排版规则、常见错误和逐图质检清单。
+- 氨基酸和其他生化分子的结构式、Fischer 投影式与分组结构图。
+- 氨基酸、肽和蛋白质相关反应式。
+- 酸碱滴定、氧合、层析校准等数据曲线。
+- 等电聚焦、亲和层析、凝胶过滤、透析和超滤等原理或装置图。
+- α-螺旋、β-折叠、β-转角和超二级结构模型。
+- 基于 PDB 与 PyMOL 的蛋白质三维结构图。
+- 序列比较、突变位点和短肽二硫键拓扑图。
+- 教学流程图、教材数据表和 Word 可编辑公式。
+
+## 统一规范
+
+- 科学正确性优先于与参考图的视觉相似度。
+- 中文使用宋体，正式标题和关键标签采用加粗宋体；英文、数字、化学式和生物学缩写使用 Times New Roman。
+- 以黑、白、灰为主，控制标注数量、箭头长度和无信息留白。
+- 默认输出 SVG 和 300-dpi PNG，并保留白底与透明背景版本。
+- 在原始分辨率下逐项核验结构、价键、数据、单位、标签、字体、重叠和裁切。
 
 ## 安装
 
-将仓库克隆到 Codex 的个人 skills 目录：
-
 ```powershell
-git clone git@github.com:libmelo/BChemFig.git "$env:USERPROFILE\.codex\skills\amino-acid-fischer-projections"
+git clone git@github.com:libmelo/BChemFig.git "$env:USERPROFILE\.codex\skills\bchemfig"
 ```
 
-技能名称为：
+技能调用名：
 
 ```text
-$amino-acid-fischer-projections
+$bchemfig
 ```
 
-## Python 依赖
+## 内置确定性脚本
+
+安装 Python 依赖：
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-Windows 默认使用：
-
-- `C:\Windows\Fonts\times.ttf`
-- `C:\Windows\Fonts\simsun.ttc`
-
-其他系统可通过命令行参数指定兼容字体文件。
-
-## 直接生成20种氨基酸图
+生成20种标准氨基酸 Fischer 投影式：
 
 ```powershell
 python scripts/draw_amino_acid_fischer.py --output-dir output
 ```
 
-指定字体：
-
-```powershell
-python scripts/draw_amino_acid_fischer.py \
-  --output-dir output \
-  --times-font <times-compatible-font-file> \
-  --simsun-font <chinese-font-file>
-```
-
-脚本会生成20个单图及五组组图，每项均含 SVG 和 PNG。
-
-## 直接生成氨基酸典型反应式
+生成五种氨基酸典型反应式：
 
 ```powershell
 python scripts/draw_amino_acid_reactions.py --output-dir output-reactions
 ```
 
-默认生成五种反应式的白底、透明背景 SVG 和 300 dpi PNG。仅生成矢量文件时：
-
-```powershell
-python scripts/draw_amino_acid_reactions.py --output-dir output-reactions --formats svg
-```
-
-在非 Windows 系统上，可用 `--times-font` 与 `--simsun-font` 指定兼容字体文件。
+Windows 默认使用 `C:\Windows\Fonts\times.ttf` 和 `C:\Windows\Fonts\simsun.ttc`。其他系统可通过脚本参数指定兼容字体。
 
 ## 技能结构
 
 ```text
 SKILL.md
 agents/openai.yaml
-references/drawing_rules.md
-references/reaction_scheme_rules.md
-scripts/draw_amino_acid_fischer.py
-scripts/draw_amino_acid_reactions.py
+references/
+  common_standards.md
+  drawing_rules.md
+  reaction_scheme_rules.md
+  data_plots_tables_equations.md
+  apparatus_and_flowcharts.md
+  protein_structure_models.md
+  sequence_and_topology.md
+scripts/
+  draw_amino_acid_fischer.py
+  draw_amino_acid_reactions.py
 ```
-
-投影式规则见 [`references/drawing_rules.md`](references/drawing_rules.md)，反应式规则见 [`references/reaction_scheme_rules.md`](references/reaction_scheme_rules.md)。

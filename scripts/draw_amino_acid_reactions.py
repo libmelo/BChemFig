@@ -161,19 +161,19 @@ def caption(s, x, y, value, size=43):
 
 def draw_r_prime(s, x, y, size=54):
     """Draw R′ with a consistently positioned superscript prime."""
-    s.text(x - 7, y, "R", size, italic=True)
+    s.text(x - 7, y, "R", size)
     s.text(x + 21, y - 18, "′", int(size * 0.58))
 
 
 def draw_r_prime_x(s, x, y, size=57):
-    s.text(x - 34, y, "R", size, italic=True)
+    s.text(x - 34, y, "R", size)
     s.text(x - 7, y - 19, "′", int(size * 0.58))
     s.text(x + 31, y, "X", size)
 
 
 def draw_r_prime_hn_left(s, end_x, y, size=53):
     """Draw R′HN so the bond at the right terminates at N."""
-    s.text(end_x - 96, y, "R", size, italic=True)
+    s.text(end_x - 96, y, "R", size)
     s.text(end_x - 70, y - 18, "′", int(size * 0.58))
     s.text(end_x - 55, y, "H", size)
     s.text(end_x - 18, y, "N", size)
@@ -221,6 +221,8 @@ def draw_vertical_connected_label(s, x, y, label, size=53):
         atom, rest = attached[label]
         s.text(x, y, atom, size)
         s.text(x + 22, y, rest, size, anchor="start")
+    elif label == "R":
+        s.text(x, y, label, size)
     else:
         s.text(x, y, label, size)
 

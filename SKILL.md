@@ -1,58 +1,57 @@
 ---
-name: amino-acid-fischer-projections
-description: Draw or review textbook-ready amino-acid Fischer projections and amino-acid reaction schemes, with explicit heavy-atom connectivity, stereochemical checks, standardized arrows, Times New Roman chemical labels, Chinese captions, and SVG/PNG output. Use for 氨基酸投影式、20种氨基酸结构组图、氨基酸反应式 or corrections to these textbook figures; do not use for unrelated general-purpose chemical illustration.
+name: bchemfig
+description: Create or review textbook-ready biochemical figures for Chinese biochemistry and food-biochemistry textbooks, including chemical structures and reactions, data curves, separation apparatus and principles, protein structural models, sequence/topology comparisons, workflows, tables, and Word-editable equations. Use for 生化教材插图、蛋白质或氨基酸图、实验原理图及其科学性和版式修订; do not use for decorative biological artwork or unrelated general-purpose graphics.
+metadata:
+  short-description: 制作与审校生化教材插图
 ---
 
-# Amino Acid Textbook Figures
+# BChemFig
 
-Produce chemically correct, visually consistent amino-acid structural figures suitable for Chinese biochemistry textbooks.
+Produce scientifically correct, visually restrained, print-ready biochemical teaching figures. Treat a supplied textbook image as a content reference, not as an automatically correct structure or layout.
 
-## Choose the drawing mode
+## Route to the relevant rules
 
-- For a Fischer projection, a standard-20 set, or a grouped amino-acid structure plate, read [references/drawing_rules.md](references/drawing_rules.md) completely before acting.
-- For an amino-acid reaction scheme, reaction-arrow correction, or textbook reaction plate, read [references/reaction_scheme_rules.md](references/reaction_scheme_rules.md) completely before acting.
-- If one artifact mixes projections and reaction schemes, apply both references. Shared rules do not override reaction-specific chemistry or Fischer stereochemistry.
+Read [references/common_standards.md](references/common_standards.md) for every task, then read only the references needed for the requested artifact:
 
-## Required procedure
+- Chemical structures, Fischer projections, amino-acid plates: [references/drawing_rules.md](references/drawing_rules.md).
+- Chemical reaction schemes: [references/reaction_scheme_rules.md](references/reaction_scheme_rules.md).
+- Curves, quantitative plots, tables, or Word equations: [references/data_plots_tables_equations.md](references/data_plots_tables_equations.md).
+- Separation principles, experimental apparatus, or teaching flowcharts: [references/apparatus_and_flowcharts.md](references/apparatus_and_flowcharts.md).
+- Protein secondary, supersecondary, tertiary, or molecular-surface models: [references/protein_structure_models.md](references/protein_structure_models.md).
+- Residue sequences, mutation comparisons, disulfide topology, or short-peptide diagrams: [references/sequence_and_topology.md](references/sequence_and_topology.md).
 
-1. Determine the requested structures, protonation convention, reaction conditions, labels, grouping, and output formats. Preserve the user's reference convention unless it is chemically wrong; explain and correct substantive errors.
-2. Prefer the bundled deterministic script for a canonical figure. Adapt a copy for a different subset or layout while preserving the relevant chemistry, attachment, typography, and spacing invariants.
-3. Use RDKit or another professional chemical toolkit to validate structures, formulae, aromaticity, valence, and stereochemistry where a concrete molecular graph is available. Generalized `R`/`R′` schemes still require manual atom-by-atom review.
-4. Export SVG and 300-dpi PNG unless the user requests one format. Preserve a white-background version; add a transparent-background version when useful for Word or page layout.
-5. Inspect every final image at original resolution. Verify every heavy-atom bond, attachment atom, carbon label, charge, stereocenter, ring, double bond, reaction arrow, condition label, caption, font, baseline, and crop. Do not report completion based only on successful execution.
+If one plate combines several modes, apply every relevant reference. Scientific correctness overrides visual similarity to the supplied reference.
 
-## Deterministic rendering: Fischer projections
+## Required workflow
 
-The helper requires Python, RDKit, and Pillow. It searches `RDKIT_VENDOR_PATH` and ancestor `.vendor/rdkit` directories before using the environment installation.
+1. Identify the teaching point, biochemical entities, protonation or experimental conditions, required labels, page context, and output formats. Resolve substantive ambiguity from authoritative data or ask only when different choices would materially change the figure.
+2. Verify the scientific content before layout. Check molecular connectivity, stereochemistry, charge, reaction conditions, sequence numbering, structural parameters, data values, units, and process state as applicable.
+3. Choose a professional method matched to the artifact:
+   - RDKit or another chemical toolkit for concrete molecular graphs; manual atom-aware vector layout for generalized `R`/`R′` schemes.
+   - Reproducible numerical code and SVG/plotting tools for curves and calibrated graphs.
+   - PDB experimental structures and PyMOL for three-dimensional proteins.
+   - Vector drawing for apparatus, mechanisms, topology, and workflows.
+   - Native Word equations and tables when editability in Word is required.
+4. Build a restrained black, white, and gray teaching graphic. Preserve meaningful hierarchy and compact spacing; do not decorate, over-label, or reproduce avoidable defects from the reference.
+5. Export SVG plus 300-dpi PNG by default. Keep a white-background version and, when useful for Word placement, an equivalent transparent-background version. Provide a Word file for editable equations or tables when requested.
+6. Inspect every final artifact at original resolution. Verify science, fonts, line attachment, arrow direction, labels, overlap, crop, and consistency across white and transparent variants. Fix the source and regenerate; do not patch only the final PNG.
+
+## Reusable deterministic scripts
+
+For the canonical 20-amino-acid Fischer set:
 
 ```powershell
 python scripts/draw_amino_acid_fischer.py --output-dir <output-directory>
 ```
 
-On Windows it defaults to `C:\Windows\Fonts\times.ttf` and `C:\Windows\Fonts\simsun.ttc`. On other systems, pass compatible font files explicitly:
-
-```powershell
-python scripts/draw_amino_acid_fischer.py --output-dir <output-directory> --times-font <font-file> --simsun-font <font-file>
-```
-
-## Deterministic rendering: reaction schemes
-
-The reaction helper generates the validated five-scheme teaching set: nitrous-acid deamination, N-acylation, DNFB labeling, Edman degradation, and Schiff-base formation.
+For the validated five-scheme amino-acid reaction set:
 
 ```powershell
 python scripts/draw_amino_acid_reactions.py --output-dir <output-directory>
 ```
 
-It searches `RDKIT_VENDOR_PATH` and ancestor `.vendor/rdkit` directories before using the environment installation. The default output includes SVG and PNG; PNG rendering requires CairoSVG from `requirements.txt`. Use `--formats svg` when a vector-only intermediate is desired. On non-Windows systems, pass Times New Roman-compatible and SimSun-compatible files with `--times-font` and `--simsun-font`.
+Both helpers search `RDKIT_VENDOR_PATH` and ancestor `.vendor/rdkit` directories. On Windows they default to Times New Roman and SimSun system fonts. Adapt a copy for a new subset or layout rather than weakening the chemical, typography, or attachment invariants in the maintained scripts.
 
-## Non-negotiable rendering invariants
+## Completion standard
 
-- Use one text engine, one font file, one point size, and one baseline for the main `C` and `H` characters in every `CH`, `CH₂`, `CH₃`, or `H₃C` label. Draw numeric subscripts separately at a smaller size and lowered position. Merely assigning the same nominal size in two renderers is insufficient.
-- Keep the carbon symbol adjacent to the bond. Use `H₃C—` when a terminal methyl bond leaves to the right; use `—CH₃` when it enters from the left or above as appropriate.
-- Let RDKit establish atom-aware bond gaps. When replacing a carbon glyph for unified text rendering, mask only the original glyph area; a large white rectangle will create broken-looking bonds.
-- Chemical symbols and Latin abbreviations use Times New Roman or the user-specified equivalent. Chinese captions use SimSun or the user-specified Chinese font. Do not fake subscripts with full-size baseline digits.
-- Aromatic ring carbon vertices may remain implicit by standard skeletal convention. All other non-hydrogen atoms and all bonds between them must be visible. `COO⁻` may be abbreviated when the user permits it.
-
-## Review behavior
-
-When asked to diagnose an existing image, identify the exact chemical or typographic cause before editing. Typical causes include a bond ending on `H` instead of `C`, a carbon hidden by an abbreviation, mixed rendering engines, a mispositioned `R′`, imidazole attachment at the wrong carbon, a distorted PTH ring, or an overlarge glyph mask. Correct the source and regenerate every affected individual, group, white-background, and transparent-background file.
+Do not report completion merely because a file rendered. A final figure must be chemically or biochemically correct, legible at intended textbook size, free of unintended overlap, visually consistent with the series, and delivered in the promised formats.
